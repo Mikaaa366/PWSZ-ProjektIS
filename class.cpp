@@ -48,7 +48,7 @@ Konto::Konto(const Konto& k) {
 }
 //konstruktor konwertujący
 Konto::Konto(string imieNazwisko, string nrKonta, double stan) {
-    cout << "Konstruktor konwertujacy Konto (string);" << endl;
+    cout << "Konstruktor konwertujacy  Konto (string);" << endl;
     this->imie = imieNazwisko.substr(0, imieNazwisko.find(" "));
     this->nazwisko = imieNazwisko.substr(imieNazwisko.find(" "),
         imieNazwisko.size());
@@ -57,44 +57,56 @@ Konto::Konto(string imieNazwisko, string nrKonta, double stan) {
 }
 string Konto::wplata(double kwota) {
     string msg = "Wplata na konto nr: " + nrKonta + ", kwoty: "
-        + doubleToString(kwota);
-    //wyrażenie lambda
-    msg += "\nWartosc zwrocona wyrazeniem lambda: " + [](double x)->string {stringstream ss;
-    ss << x;
-    string str;
-    ss >> str;
-    return str; }(kwota)+"\n";
-    stanKonta += kwota;
-    return msg;
+   		+ doubleToString(kwota);
+	//wyrażenie lambda
+	stanKonta += kwota;
+	msg += "\nStan konta: " + [](double x)->string 
+	{
+	    stringstream ss;
+	    ss << x;
+	    string str;
+	    ss >> str;
+	    return str; 
+	}(stanKonta)+"\n";
+
+	return msg;
 }
 string Konto::wyplata(double kwota) {
-    stringstream ss;
-    ss << kwota;
-    string msg = "Wyplata z konta nr: " + nrKonta + ", kwoty: "
-        + doubleToString(kwota);
+	stringstream ss;
+	ss << kwota;
+	string msg = "Wyplata z konta nr: " + nrKonta + ", kwoty: "
+		+ doubleToString(kwota);
 
-    if (stanKonta >= kwota) {
-        stanKonta -= kwota;
-        msg += "\nStan konta po operacji: " + doubleToString (stanKonta) + "\n";
-    }
-    return msg;
+	if (stanKonta >= kwota) {
+		stanKonta -= kwota;
+		msg += "\nStan konta po operacji: " + doubleToString(stanKonta) + "\n";
+	} else {
+	    msg += "\nZa maoo srodkow aby zrealizowac wyplate";
+	}
+	return msg;
 }
 void Konto::wyswietl() {
     cout << imie << " " << nazwisko << ", nr konta: " << nrKonta << ", stan = "
         << stanKonta << endl;
 }
-
 void Konto::wpisz() {
-    cout << "Podaj imie wlasciciela: ";
-    cin >> imie;
-    cout << "Podaj nazwisko wlasciciela: ";
-    cin >> imie;
-    nrKonta = "0000 0001 0003 9571";
+	cout << "Podaj imie wlasciciela: ";
+	cin >> imie;
+	cout << "Podaj nazwisko wlasciciela: ";
+	cin >> nazwisko;
+	cout << "Podaj numer konta: ";
+	cin.ignore();
+    getline(cin, nrKonta);
+    cout << "Podaj dostepne srodki: ";
+    cin >> stanKonta;
 
 }
 
 void Konto::wypisz() {
     cout << "Konto  nalezy do " << imie << " " << nazwisko << " numer konta to " << nrKonta << "dostepne srodki to " << stanKonta << endl;
+}
+void Konto::wypiszStanKonta() {
+	cout << "Stan konta wynosi:" << stanKonta << endl;
 }
 Konto Konto::operator+(const Konto& konto) { //przeciazenie operatora + dla klasy konto
     Konto Konto; //stworzenie nowego obiektu
